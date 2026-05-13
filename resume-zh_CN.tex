@@ -3,29 +3,35 @@
 % !Mode:: "TeX:UTF-8"
 
 \documentclass{resume}
-\usepackage{stys/zh_CN-Adobefonts_external} % Simplified Chinese Support using external fonts (./fonts/zh_CN-Adobe/)
-% \usepackage{stys/NotoSansSC_external}
-% \usepackage{stys/NotoSerifCJKsc_external}
-% \usepackage{stys/zh_CN-Adobefonts_internal} % Simplified Chinese Support using system fonts
-\usepackage{stys/linespacing_fix} % disable extra space before next section
+\usepackage{stys/NotoSansSC_external}
+% \usepackage{stys/zh_CN-Adobefonts_external}
+\usepackage{stys/linespacing_fix}
 \usepackage{bookmark}
 \usepackage{cite}
-% \usepackage{graphicx} % for header_with_photo. avatar
-% \usepackage{tabularray} % for header_with_photo
+\usepackage{graphicx}
+\usepackage{tabularray}
 
 \begin{document}
-\pagenumbering{gobble} % suppress displaying page number
+\pagenumbering{gobble}
 
-\settitlelinestyle{default} % partialbg, fullbg
-% \settitlelinestyle{partialbg}
-% \settitlelinestyle{fullbg}
+\setresumestyle{simple}
+% \setresumestyle{classic}
 
-% \input{texs/header_with_photo} % uncomment line #13 #14!
-\input{texs/header}
-\input{texs/sections}
+% Classic title line styles: default, partialbg, fullbg.
+\settitlelinestyle{default}
+
+\input{texs/simple_header_with_photo}
+\input{texs/simple_sections}
+% Classic no-photo:
+% \input{texs/header}
+% \input{texs/sections}
+% Classic with photo:
+% \input{texs/header_with_photo}
+% \input{texs/sections}
 
 %% Reference
 % \newpage
 % \bibliographystyle{cites/IEEETran}
 % \bibliography{cites/mycite}
+
 \end{document}

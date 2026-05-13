@@ -1,3 +1,24 @@
+## 新样式
+新增 `simple` 样式作为紧凑模板：
+- 使用方式： `resume-zh_CN.tex` 中 `\setresumestyle{simple}`
+- 特点：黑白极简、无图标、信息密度高
+- 不生成目录
+
+效果图：
+![simple](./images/resume_simple.png)
+
+## 原样式
+通过 `resume-zh_CN.tex` 中的 `\setresumestyle{classic}` 和 `\settitlelinestyle{default}` 进行设置。
+
+三种 `settitlelinestyle`：
+1. `default`：标题行有下划线，无背景色，标题和下划线同色 `fgcolor`
+2. `partialbg`：标题行有下划线，标题内容部分有背景色 `bgcolor`，标题和下划线同色 `fgcolor`
+3. `fullbg`：标题行无下划线，标题行背景色 `bgcolor`，标题 `fgcolor`
+
+具体的颜色和样式可调，需要修改 `resume.cls` 文件
+
+---
+
 本仓库 Fork 自 [billryan/resume: An elegant \LaTeX\ résumé template.](https://github.com/billryan/resume)
 
 原仓库已经多年没有更新了，我在使用其中文版本的时候遇到一些新的需求，也即本仓库所做的主要修改：
@@ -38,15 +59,6 @@
 
 使用了 [tabularray](https://github.com/lvjr/tabularray) 包，要求 TexLive2021 及以上的版本
 
-## 支持了多种标题行样式
-通过 `resume-zh_CN.tex` 中的 `\settitlelinestyle{default}` 进行设置
-
-三种：
-1. `default`：标题行有下划线，无背景色，标题和下划线同色 `fgcolor`
-2. `partialbg`：标题行有下划线，标题内容部分有背景色 `bgcolor`，标题和下划线同色 `fgcolor`
-3. `fullbg`：标题行无下划线，标题行背景色 `bgcolor`，标题 `fgcolor`
-
-具体的颜色和样式可调，需要修改 `resume.cls` 文件
 
 ## 其他修改
 - 支持定义高亮色 `accentcolor`，命令 `\texthl{}`

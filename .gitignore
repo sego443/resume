@@ -47,3 +47,5 @@ myresume-zh_CN.tex
 myresume-zh_CN.pdf
 
 build/
+tmp/
+real/
