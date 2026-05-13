@@ -9,6 +9,7 @@
 \RequirePackage{xltxtra}
 % use ifthen
 \RequirePackage{ifthen}
+\RequirePackage{xparse}
 \newcommand{\isempty}[1]{\equal{#1}{}}
 % use hyperlink for email and url
 \RequirePackage{hyperref}
@@ -27,6 +28,7 @@
 \definecolor{nwpubluebg}{HTML}{01408f}
 % \definecolor{nwpubluebg}{HTML}{004DFF} % C100 M70
 \definecolor{resumeblack}{HTML}{000000}
+\definecolor{simplev2red}{HTML}{9F1D2F}
 
 % loading fonts
 \RequirePackage{fontspec}
@@ -62,7 +64,11 @@
 
 \newcommand{\setresumestyle}[1]{%
   \renewcommand{\resumestyle}{#1}%
-  \ifthenelse{\equal{#1}{simple}}{\special{pdf:put @catalog << /PageMode /UseNone >>}}{}%
+  \ifthenelse{\equal{#1}{simple}}{%
+    \special{pdf:put @catalog << /PageMode /UseNone >>}%
+  }{%
+    \ifthenelse{\equal{#1}{simplev2}}{\special{pdf:put @catalog << /PageMode /UseNone >>}}{}%
+  }%
   \applyResumeLayout%
   \applyColorAndTitleStyle%
 }
@@ -73,22 +79,67 @@
 }
 
 \newcommand*{\tallphantom}[1]{\vphantom{\rule{0pt}{#1}}}
+\newcommand{\ifsimpleresumestyle}[2]{%
+  \ifthenelse{\equal{\resumestyle}{simple}}{#1}{%
+    \ifthenelse{\equal{\resumestyle}{simplev2}}{#1}{#2}%
+  }%
+}
+\newcommand{\ifsimplevtwo}[2]{%
+  \ifthenelse{\equal{\resumestyle}{simplev2}}{#1}{#2}%
+}
 
 % Simple layout rhythm: each vertical relationship is explicit so section
 % headers and body lines cannot affect one another through \baselineskip.
 \newcommand*{\simpleitemlabel}{\raisebox{0.12ex}{\textbullet}}
 
 % 标题大小
-\newcommand*{\simplesectionfont}{\fontsize{10pt}{11.2pt}\selectfont\bfseries}
+\newcommand*{\simplesectionfont}{%
+  \fontsize{10pt}{11.2pt}\selectfont
+  \ifsimplevtwo{\heiti\bfseries}{\bfseries}%
+}
 % 正文大小
 \newcommand*{\simplebodysize}{9pt}
 % 正文行间距
 \newcommand*{\simplebodyleading}{15pt}
 
-\newcommand*{\simpleentryfont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont\bfseries}
-\newcommand*{\simplebodyfont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont}
-\newcommand*{\simplerolefont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont\bfseries}
-\newcommand*{\simpledatefont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont}
+\newcommand*{\simplevtwonormalfontsize}{9pt}
+\newcommand*{\simplevtwonormalleading}{15pt}
+\newcommand*{\simplevtwonormalcolor}{resumeblack}
+\newcommand*{\simplevtwonormalfontcommand}{\heiti}
+\newcommand{\setsimplevtwonormalfontsize}[2]{%
+  \renewcommand*{\simplevtwonormalfontsize}{#1}%
+  \renewcommand*{\simplevtwonormalleading}{#2}%
+}
+\newcommand{\setsimplevtwonormalcolor}[1]{%
+  \renewcommand*{\simplevtwonormalcolor}{#1}%
+}
+\newcommand{\setsimplevtwonormalfont}[1]{%
+  \renewcommand*{\simplevtwonormalfontcommand}{#1}%
+}
+\newcommand*{\simplevtwonormalfont}{%
+  \fontsize{\simplevtwonormalfontsize}{\simplevtwonormalleading}\selectfont
+  \simplevtwonormalfontcommand\color{\simplevtwonormalcolor}%
+}
+\newcommand*{\simplevtwoentryfont}{%
+  \fontsize{\simplevtwonormalfontsize}{\simplevtwonormalleading}\selectfont
+  \heiti\color{resumeblack}%
+}
+\newcommand*{\simpleentryfont}{%
+  \ifsimplevtwo{\simplevtwoentryfont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont\bfseries}%
+}
+\newcommand*{\simplebodyfont}{%
+  \ifsimplevtwo{\simplevtwonormalfont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont}%
+}
+\newcommand*{\simplerolefont}{%
+  \ifsimplevtwo{\simplevtwonormalfont\bfseries}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont\bfseries}%
+}
+\newcommand*{\simpledatefont}{%
+  \ifsimplevtwo{\simplevtwoentryfont}{\fontsize{\simplebodysize}{\simplebodyleading}\selectfont}%
+}
+\newcommand{\simplevtwoaccentstrong}[1]{{\heiti\bfseries\color{simplev2red}#1}}
+\newcommand{\simplevtwoaccent}[1]{{\heiti\color{simplev2red}#1}}
+\newcommand{\simplevtwoem}[1]{\ifsimplevtwo{{\kaishu #1}}{{\textit{#1}}}}
+\newcommand{\simplevtwostrong}[1]{\ifsimplevtwo{{\heiti\bfseries #1}}{{\textbf{#1}}}}
 \newcommand*{\simpleboxgap}{8.0pt}
 \newcommand*{\simplesectionfirstbeforedim}{0pt}
 \newcommand*{\simplesectiontitletoruledim}{4.0pt}
@@ -97,10 +148,17 @@
 \newcommand*{\simpleruletobodydim}{\simplebodyrowgap}
 \newif\ifsimpleneedsbodygap
 \newif\ifsimplefirstsection
+\newif\ifsimplevvisualbalance
 \simplefirstsectiontrue
+\simplevvisualbalancefalse
+\newsavebox{\visualbalancedresumebox}
+\newsavebox{\visualbalancedresumescratchbox}
+\newdimen\visualbalancedresumeheight
+% Align visible ink, not only TeX's measured box, for the raised simple_v2 header.
+\newcommand*{\visualbalancedresumevisualoffset}{-24pt}
 
 \newcommand{\applyResumeLayout}{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \newgeometry{left=48pt,right=48pt,top=57pt,bottom=0.52in,nohead}%
     \setlist{nosep}%
     \setlist[itemize]{topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=0pt, leftmargin=1.65em, labelwidth=0.22em, labelsep=0.35em, label=\simpleitemlabel, before=\simplebodyfont}%
@@ -130,10 +188,46 @@
   }%
 }
 
+\NewDocumentEnvironment{visualbalancedresume}{+b}{%
+  \ifsimplevtwo{%
+    \begingroup
+      \simplevvisualbalancetrue
+      \setbox\visualbalancedresumescratchbox=\vbox{%
+        \hsize=\linewidth
+        \linewidth=\hsize
+        \parindent=0pt
+        #1%
+      }%
+      \global\visualbalancedresumeheight=\dimexpr\ht\visualbalancedresumescratchbox+\dp\visualbalancedresumescratchbox\relax
+      \global\setbox\visualbalancedresumebox=\copy\visualbalancedresumescratchbox
+    \endgroup
+    \ifdim\visualbalancedresumeheight<\paperheight
+      \thispagestyle{empty}%
+      \enlargethispage{\dimexpr\paperheight-\textheight\relax}%
+      \vspace*{\dimexpr -1in-\voffset-\topmargin-\headheight-\headsep\relax}%
+      \noindent\vbox to \paperheight{%
+        \vfil
+        \vspace*{\visualbalancedresumevisualoffset}%
+        \noindent\box\visualbalancedresumebox
+        \vfil
+      }\par
+    \else
+      \simplevvisualbalancefalse
+      #1%
+    \fi
+  }{%
+    #1%
+  }%
+}{}
+
 \newcommand{\applyColorAndTitleStyle}{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \colorlet{fgcolor}{resumeblack}%
-    \colorlet{accentcolor}{resumeblack}%
+    \ifsimplevtwo{%
+      \colorlet{accentcolor}{simplev2red}%
+    }{%
+      \colorlet{accentcolor}{resumeblack}%
+    }%
     \titleformat{\section}
       {\normalsize\bfseries\raggedright\color{fgcolor}}
       {}{0em}
@@ -193,11 +287,15 @@
   \ifthenelse{\equal{\resumestyle}{simple}}{%
     \simplebodyrow{{\simplebodyfont #1 \hfill {\simpledatefont #2}}}%
   }{%
-    \subsection[#1]{#1 \hfill #2}%
+    \ifthenelse{\equal{\resumestyle}{simplev2}}{%
+      \simplebodyrow{{\simpleentryfont #1 \hfill {\simpledatefont #2}}}%
+    }{%
+      \subsection[#1]{#1 \hfill #2}%
+    }%
   }%
 }
 \newcommand{\datedline}[2]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \simplebodyrow{#1 \hfill #2}%
   }{%
     {\par #1 \hfill #2 \par}%
@@ -233,7 +331,7 @@
 }
 
 \newcommand{\name}[1]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \centerline{\Large\bfseries{#1}}%
     \vspace{0.8ex}%
   }{%
@@ -250,7 +348,7 @@
 
 % Title
 \newcommand*{\sectionTitle}[2]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \simplesectionline{#1}%
   }{%
     \ifthenelse{\equal{\titlelinestyle}{default}}{%
@@ -344,23 +442,23 @@
 
 % \newcommand{\basicInfoItem}[2]{\color{fgcolor}{\icon{#1}}\ \color{black}\rmfamily\large{#2}}
 \newcommand{\basicInfoItem}[2]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}%
+  \ifsimpleresumestyle%
     {\rmfamily\small{#2}}%
     {\icon{#1}\ \rmfamily\large{#2}}%
 }
 
 \newcommand{\dotSep}{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{\quad}{\ \ \textbf{\textperiodcentered}\ \ }%
+  \ifsimpleresumestyle{\quad}{\ \ \textbf{\textperiodcentered}\ \ }%
 }
 
 \newcommand{\basicInfo}[1]{%
   % \centerline{\sffamily\large{#1}}
   \centerline{#1}%
-  \ifthenelse{\equal{\resumestyle}{simple}}{}{\vspace{1.5ex}}%
+  \ifsimpleresumestyle{}{\vspace{1.5ex}}%
 }
 
 \newcommand{\role}[2]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \simplebodyrow{{\simplerolefont #1}\ {\simplebodyfont #2}}%
   }{%
     {\par \textit{#1} ~ #2 \par}%
@@ -368,10 +466,10 @@
   }%
 }
 
-\newcommand{\texthl}[1]{\textcolor{accentcolor}{\textbf{#1}}}
+\newcommand{\texthl}[1]{\ifsimplevtwo{\simplevtwoaccentstrong{#1}}{\textcolor{accentcolor}{\textbf{#1}}}}
 
 \newcommand{\normalline}[1]{%
-  \ifthenelse{\equal{\resumestyle}{simple}}{%
+  \ifsimpleresumestyle{%
     \simplebodyrow{#1}%
   }{%
     \par #1 \par

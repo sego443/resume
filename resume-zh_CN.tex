@@ -3,8 +3,8 @@
 % !Mode:: "TeX:UTF-8"
 
 \documentclass{resume}
-\usepackage{stys/NotoSansSC_external}
-% \usepackage{stys/zh_CN-Adobefonts_external}
+% \usepackage{stys/NotoSansSC_external}
+\usepackage{stys/zh_CN-Adobefonts_external}
 \usepackage{stys/linespacing_fix}
 \usepackage{bookmark}
 \usepackage{cite}
@@ -14,14 +14,27 @@
 \begin{document}
 \pagenumbering{gobble}
 
-\setresumestyle{simple}
+\setresumestyle{simplev2}
+% \setresumestyle{simple}
 % \setresumestyle{classic}
+
+% Simple V2 normal body controls.
+% TeX command names cannot contain digits, so the public macros use "vtwo".
+% \setsimplevtwonormalfontsize{9pt}{15pt}
+% \setsimplevtwonormalcolor{resumeblack}
+% \setsimplevtwonormalfont{\heiti}
 
 % Classic title line styles: default, partialbg, fullbg.
 \settitlelinestyle{default}
 
-\input{texs/simple_header_with_photo}
-\input{texs/simple_sections}
+% Simple V2:
+\begin{visualbalancedresume}
+  \input{texs/simple_header_v2_with_photo}
+  \input{texs/simple_sections_v2}
+\end{visualbalancedresume}
+% Simple:
+% \input{texs/simple_header_with_photo}
+% \input{texs/simple_sections}
 % Classic no-photo:
 % \input{texs/header}
 % \input{texs/sections}

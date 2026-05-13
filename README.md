@@ -1,4 +1,78 @@
-## 新样式
+### 新样式 simple V2
+`simplev2` 是基于 `simple` 的第二版紧凑样式，当前 `resume-zh_CN.tex` 默认启用这一版。
+
+效果图：
+![simplev2](./images/resume_simple_v2.png)
+
+#### 如何使用 simplev2
+需要同时启用样式、字体包和对应内容文件：
+
+```tex
+\usepackage{stys/zh_CN-Adobefonts_external}
+
+\setresumestyle{simplev2}
+
+\begin{visualbalancedresume}
+  \input{texs/simple_header_v2_with_photo}
+  \input{texs/simple_sections_v2}
+\end{visualbalancedresume}
+```
+
+然后运行：
+
+```sh
+make zh_CN
+```
+
+生成结果在 `build/xxx-xxx.pdf`。
+
+#### 修改自己的信息
+- 个人信息、联系方式和照片：修改 `texs/simple_header_v2_with_photo.tex`
+- 教育、实习、项目、技能等正文内容：修改 `texs/simple_sections_v2.tex`
+- 照片文件默认读取 `images/reference-avatar.png`
+
+`simplev2` 使用独立内容文件，不和 `simple` 共用 `texs/simple_header_with_photo.tex` / `texs/simple_sections.tex`。
+
+#### 切回 simple 或 classic
+如果要切回 `simple`，需要同时切换 style 和 input 文件，例如：
+
+```tex
+\setresumestyle{simple}
+\input{texs/simple_header_with_photo}
+\input{texs/simple_sections}
+```
+
+如果要使用 `classic`，使用原来的 `header` / `sections` 文件组合。不要只改 `\setresumestyle{...}`，否则样式和内容文件会不匹配。
+
+#### simplev2 字体和样式
+`simplev2` 默认使用 `stys/zh_CN-Adobefonts_external`，正文默认黑体，强调色为深红色。加粗黑体依赖：
+
+- `fonts/zh_CN-Adobe/SourceHanSansSC-Bold.otf`
+- `fonts/zh_CN-Adobe/SourceHanSans-LICENSE.txt`
+
+`simplev2` 正文可在 `resume-zh_CN.tex` 中调整：
+
+```tex
+\setsimplevtwonormalfontsize{9pt}{15pt}
+\setsimplevtwonormalcolor{resumeblack}
+\setsimplevtwonormalfont{\heiti}
+```
+
+`simplev2` 提供四个正文内联样式：
+
+```tex
+\simplevtwoaccentstrong{加粗红色}
+\simplevtwoaccent{红色}
+\simplevtwoem{楷体}
+\simplevtwostrong{加粗黑色}
+```
+
+`texs/simple_sections_v2.tex` 顶部还可以调整 V2 section 里的局部节奏，例如 section box 间距、红色条目标题字号和红色条目上下间距。
+
+注意：TeX 控制序列名不能直接包含数字，所以样式名是 `simplev2`，可调用宏使用 `simplevtwo...`。
+
+
+## 新样式 simple
 新增 `simple` 样式作为紧凑模板：
 - 使用方式： `resume-zh_CN.tex` 中 `\setresumestyle{simple}`
 - 特点：黑白极简、无图标、信息密度高
@@ -6,6 +80,8 @@
 
 效果图：
 ![simple](./images/resume_simple.png)
+
+---
 
 ## 原样式
 通过 `resume-zh_CN.tex` 中的 `\setresumestyle{classic}` 和 `\settitlelinestyle{default}` 进行设置。

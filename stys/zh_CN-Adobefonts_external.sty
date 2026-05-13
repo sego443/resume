@@ -11,15 +11,19 @@
 \defaultfontfeatures{Path = fonts/zh_CN-Adobe/, Mapping=tex-text}
 
 \setCJKmainfont[
-BoldFont=AdobeHeitiStd-Regular.otf,
+BoldFont=SourceHanSansSC-Bold.otf,
 ItalicFont=AdobeKaitiStd-Regular.otf,
-SmallCapsFont=AdobeHeitiStd-Regular.otf
+SmallCapsFont=SourceHanSansSC-Bold.otf
 ]{AdobeSongStd-Light.otf}
-\setCJKsansfont{AdobeHeitiStd-Regular.otf}
+\setCJKsansfont[
+BoldFont=SourceHanSansSC-Bold.otf
+]{AdobeHeitiStd-Regular.otf}
 \setCJKmonofont{AdobeFangsongStd-Regular.otf}
 
 \setCJKfamilyfont{zhsong}{AdobeSongStd-Light.otf}
-\setCJKfamilyfont{zhhei}{AdobeHeitiStd-Regular.otf}
+\setCJKfamilyfont{zhhei}[
+BoldFont=SourceHanSansSC-Bold.otf
+]{AdobeHeitiStd-Regular.otf}
 \setCJKfamilyfont{zhfs}{AdobeFangsongStd-Regular.otf}
 \setCJKfamilyfont{zhkai}{AdobeKaitiStd-Regular.otf}
 

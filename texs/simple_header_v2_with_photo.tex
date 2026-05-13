@@ -1,0 +1,44 @@
+\begingroup
+
+\newcommand*{\simpleHeaderVTwoIconBoxWidth}{9pt}
+\newcommand*{\simpleHeaderVTwoIconFontSize}{8pt}
+\newcommand*{\simpleHeaderVTwoIconLeading}{9pt}
+\newcommand*{\simpleHeaderVTwoIconBaselineShift}{-0.20ex}
+\newcommand*{\simpleHeaderVTwoTopShift}{\ifsimplevvisualbalance 0pt\else -48pt\fi}
+
+\newcommand*{\simpleHeaderVTwoIcon}[1]{%
+  \raisebox{\simpleHeaderVTwoIconBaselineShift}{%
+    \makebox[\simpleHeaderVTwoIconBoxWidth][c]{%
+      {\fontsize{\simpleHeaderVTwoIconFontSize}{\simpleHeaderVTwoIconLeading}\selectfont #1}%
+    }%
+  }%
+}
+
+\newcommand*{\simpleHeaderVTwoInfoItem}[2]{%
+  {\fontsize{9pt}{11pt}\selectfont
+    \simpleHeaderVTwoIcon{#1}\hspace{3pt}#2}%
+}
+
+\vspace*{\simpleHeaderVTwoTopShift}
+
+\noindent\hbox to \linewidth{%
+  \raisebox{72pt}[0pt][0pt]{%
+    \vtop{%
+      \hsize=.62\linewidth
+      \vskip 4pt
+      \hbox{{\fontsize{16pt}{18pt}\selectfont\bfseries 张三}}%
+      \vskip 5pt
+      \hbox{\simpleHeaderVTwoInfoItem{\faiconsixbf{mobile-screen}}{1-800-273-8255}}%
+      \vskip 1pt
+      \hbox{\simpleHeaderVTwoInfoItem{\faiconsix{envelope}}{\href{mailto:sego443@outlook.com}{sego443@outlook.com}}}%
+      \vskip 1pt
+      \hbox{\simpleHeaderVTwoInfoItem{\faiconsixbf{github}}{\href{https://github.com/sego443}{sego443}}}%
+    }%
+  }%
+  \hfill
+  \includegraphics[width=57pt,height=72pt]{images/reference-avatar}%
+}
+
+\vspace{18.8pt}
+
+\endgroup
